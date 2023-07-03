@@ -1,0 +1,11 @@
+{
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"simple-git": "^3.19.1"
+	},
+	"devDependencies": {
+		"prettier": "2.8.8"
+	}
+}
