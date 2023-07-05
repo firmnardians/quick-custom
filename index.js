@@ -1,21 +1,53 @@
 const simpleGit = require('simple-git');
 const git = simpleGit.default();
 const fs = require('fs');
-
-const GIT_URL = 'git@gitlab.dataon.com:fe-custom';
-const PATH = 'client';
-
 const readline = require('readline').createInterface({
 	input: process.stdin,
 	output: process.stdout,
 });
 
+const CUSTOM_NAME = 'fe-custom';
+const GIT_URL = `git@gitlab.dataon.com:${CUSTOM_NAME}`;
+const PATH = 'client';
+
+/**
+ *
+ * @param {any} err
+ * @param {string} msg
+ */
 function responseError(err, msg = 'Process Error') {
 	console.log(msg, err);
 	readline.close();
 }
 
+function createSpace() {
+	for (let index = 0; index < 10; index++) {
+		console.log('*'.repeat(index + 1));
+	}
+}
+
+/**
+ *
+ * @param {string} name
+ * @return {boolean}
+ */
+function duplicateClientPath(name) {
+	const isClientPathExist = `./${PATH}/${name}`;
+	if (fs.existsSync(isClientPathExist)) return true;
+
+	return false;
+}
+
+/**
+ *
+ * @param {string} name
+ */
 async function usingGit(name) {
+	if (duplicateClientPath(name)) {
+		console.log('This client name already exists, use a different name.');
+		return startQuestion(true);
+	}
+
 	try {
 		console.log('Process to clone repository...');
 
@@ -63,11 +95,24 @@ async function usingGit(name) {
 	}
 }
 
-readline.question(`What's the client name?`, (name) => {
-	const dir = `./${PATH}`;
-	if (!fs.existsSync(dir)) {
-		fs.mkdirSync(dir);
-	}
+/**
+ *
+ * @param {boolean} isDuplicate
+ */
+function startQuestion(isDuplicate) {
+	if (!isDuplicate) createSpace();
 
-	usingGit(`fe-custom-${name}`);
-});
+	/**
+	 * @param {string} name
+	 */
+	readline.question(`What's the ${isDuplicate ? 'new client name?' : 'client name?'}`, (name) => {
+		const dir = `./${PATH}`;
+		if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+
+		if (name?.includes(CUSTOM_NAME)) return usingGit(`${name}`);
+
+		return usingGit(`${CUSTOM_NAME}-${name}`);
+	});
+}
+
+startQuestion();

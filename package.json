@@ -1,6 +1,7 @@
 {
 	"scripts": {
-		"start": "node index.js"
+		"start": "npm i && node index.js",
+		"clean": "rm -rf client"
 	},
 	"dependencies": {
 		"simple-git": "^3.19.1"
