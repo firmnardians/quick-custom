@@ -48,51 +48,47 @@ async function usingGit(name) {
 		return startQuestion(true);
 	}
 
-	try {
-		console.log('Process to clone repository...');
+	console.log('Process to clone repository...');
 
-		await git
-			.clone(`${GIT_URL}/template/fe-custom-client-template.git`, `./${PATH}/${name}`)
-			.then(async () => {
-				git.cwd(`./${PATH}/${name}`)
-					.then(() => {
-						console.log('Cleaning remote origin...');
+	await git
+		.clone(`${GIT_URL}/template/fe-custom-client-template.git`, `./${PATH}/${name}`)
+		.then(async () => {
+			git.cwd(`./${PATH}/${name}`)
+				.then(() => {
+					console.log('Cleaning remote origin...');
 
-						git.removeRemote('origin')
-							.then(async () => {
-								console.log('Add new remote origin...');
+					git.removeRemote('origin')
+						.then(async () => {
+							console.log('Add new remote origin...');
 
-								await git
-									.addRemote('origin', `${GIT_URL}/${name}.git`)
-									.then(async () => {
-										await git
-											.push('origin', 'master')
-											.then(() => {
-												console.log('Process Complete');
-												readline.close();
-											})
-											.catch((err) => {
-												responseError(err, 'PUSH_RESPOSITORY_ERROR');
-											});
-									})
-									.catch((err) => {
-										responseError(err, 'ADD_REMOTE_ERROR');
-									});
-							})
-							.catch((err) => {
-								responseError(err, 'REMOVE_REMOTE_ERROR');
-							});
-					})
-					.catch((err) => {
-						responseError(err, 'CHANGE_DIRECTORY_ERROR');
-					});
-			})
-			.catch((err) => {
-				responseError(err, 'CLONE_PROCESS_ERROR: ');
-			});
-	} catch (error) {
-		if (error) responseError(error, 'SOMETHING_WENT_WRONG: ');
-	}
+							await git
+								.addRemote('origin', `${GIT_URL}/${name}.git`)
+								.then(async () => {
+									await git
+										.push('origin', 'master')
+										.then(() => {
+											console.log('Process Complete');
+											readline.close();
+										})
+										.catch((err) => {
+											responseError(err, 'PUSH_RESPOSITORY_ERROR');
+										});
+								})
+								.catch((err) => {
+									responseError(err, 'ADD_REMOTE_ERROR');
+								});
+						})
+						.catch((err) => {
+							responseError(err, 'REMOVE_REMOTE_ERROR');
+						});
+				})
+				.catch((err) => {
+					responseError(err, 'CHANGE_DIRECTORY_ERROR');
+				});
+		})
+		.catch((err) => {
+			responseError(err, 'CLONE_PROCESS_ERROR: ');
+		});
 }
 
 /**
