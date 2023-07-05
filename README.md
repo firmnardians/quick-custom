@@ -13,3 +13,17 @@ Open your terminal and try this.
 
   npm run start
 ```
+
+## Script
+
+To run this project
+
+```bash
+  npm run start
+```
+
+To clean the client folder
+
+```bash
+  npm run clean
+```
