@@ -65,7 +65,8 @@ async function usingGit(name) {
 								.addRemote('origin', `${GIT_URL}/${name}.git`)
 								.then(async () => {
 									await git
-										.push('origin', 'master')
+										.pull('origin', 'master')
+										.push(['-u', 'origin', 'master'])
 										.then(() => {
 											console.log('Process Complete');
 											readline.close();
