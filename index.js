@@ -1,10 +1,7 @@
 const simpleGit = require('simple-git');
 const git = simpleGit.default();
 const fs = require('fs');
-const readline = require('readline').createInterface({
-	input: process.stdin,
-	output: process.stdout,
-});
+const readline = require('readline').createInterface({ input: process.stdin, output: process.stdout });
 
 const CUSTOM_NAME = 'fe-custom';
 const GIT_URL = `git@gitlab.dataon.com:${CUSTOM_NAME}`;
@@ -15,15 +12,13 @@ const PATH = 'client';
  * @param {any} err
  * @param {string} msg
  */
-function responseError(err, msg = 'Process Error') {
+function responseError(err, msg = 'Process error') {
 	console.log(msg, err);
 	readline.close();
 }
 
 function createSpace() {
-	for (let index = 0; index < 10; index++) {
-		console.log('*'.repeat(index + 1));
-	}
+	for (let index = 0; index < 10; index++) console.log('*'.repeat(index + 1));
 }
 
 /**
@@ -71,25 +66,15 @@ async function usingGit(name) {
 											console.log('Process Complete');
 											readline.close();
 										})
-										.catch((err) => {
-											responseError(err, 'PUSH_RESPOSITORY_ERROR');
-										});
+										.catch((err) => responseError(err, 'PUSH_RESPOSITORY_ERROR'));
 								})
-								.catch((err) => {
-									responseError(err, 'ADD_REMOTE_ERROR');
-								});
+								.catch((err) => responseError(err, 'ADD_REMOTE_ERROR'));
 						})
-						.catch((err) => {
-							responseError(err, 'REMOVE_REMOTE_ERROR');
-						});
+						.catch((err) => responseError(err, 'REMOVE_REMOTE_ERROR'));
 				})
-				.catch((err) => {
-					responseError(err, 'CHANGE_DIRECTORY_ERROR');
-				});
+				.catch((err) => responseError(err, 'CHANGE_DIRECTORY_ERROR'));
 		})
-		.catch((err) => {
-			responseError(err, 'CLONE_PROCESS_ERROR: ');
-		});
+		.catch((err) => responseError(err, 'CLONE_PROCESS_ERROR: '));
 }
 
 /**
